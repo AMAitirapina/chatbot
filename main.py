@@ -5,7 +5,7 @@ from severina import Severina
 with open('token.json') as jsonFile:
     token = json.load(jsonFile)
 telegram = telepot.Bot(token)
-bot = Severina("Severina_Bot")
+bot = Severina("memoria")
 
 def receiveMsg(msg):
     phrase = bot.listen(phrase=msg['text'])
