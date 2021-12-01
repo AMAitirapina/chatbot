@@ -11,7 +11,7 @@ class Severina():
             memory = open(name + '.json', 'w')
             memory.write('[["Severina"], {"oi": "Olá! Qual seu nome?", "tchau": "Tchau! Tchau!"}]')
             memory.close()
-            memory = open(name+'.json', 'r')
+            memory = open(name + '.json', 'r')
         self.name = name
         self.known, self.phrases = json.load(memory)
         memory.close()
@@ -23,7 +23,7 @@ class Severina():
     def think(self, phrase):
         if phrase in self.phrases:
             return self.phrases[phrase]
-        if phrase == 'Aprende':
+        if phrase == 'aprende':
             return 'O que você quer que eu aprenda?'
         if phrase == 'Forms':
             return "https://docs.google.com/forms/d/e/1FAIpQLSdmrdGbOZgiK6GyStj9HTBBXIji4AycF6o2ZDjsmG9udgSP2w/viewform"
