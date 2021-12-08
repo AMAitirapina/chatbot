@@ -1,6 +1,6 @@
 import telepot
 import json
-from severina import Severina
+from chatbot import Severina
 
 with open('token.json') as jsonFile:
     token = json.load(jsonFile)
@@ -15,6 +15,7 @@ def receiveMsg(msg):
     telegram.sendMessage(chatID, response)
 
 telegram.message_loop(receiveMsg)
+print ("em execução!")
 
 while True:
     pass

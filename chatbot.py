@@ -9,26 +9,33 @@ class Severina():
             memory = open(name+'.json', 'r')
         except FileNotFoundError:
             memory = open(name+'.json', 'w')
-            memory.write('[["Severina"], {"Oi": "Olá! Qual seu nome?", "tchau": "Tchau! Tchau!"}]')
+            memory.write('''[
+                                ["Severina"],
+                                {
+                                    "oi": "Olá! Qual seu nome?",
+                                    "tchau": "Tchau! Tchau!",
+                                    "tudo bem?": "Tudo bem! E você?",
+                                    "sentimento": "Hoje eu me sinto bem! E você?",
+                                    "ajuda": "Como posso ajudar?"
+                                }
+                            ]''')
             memory.close()
             memory = open(name+'.json', 'r')
         self.name = name
         self.known, self.phrases = json.load(memory)
         memory.close()
         self.historic = [None]
+
     def listen(self, phrase=None):
-        if phrase == None:
-            phrase = input('>: ')
-        phrase = str(phrase)
-#        phrase = phrase.lower()
-        return phrase
+        return phrase.lower()
+
     def think(self, phrase):
         if phrase in self.phrases:
             return self.phrases[phrase]
         if phrase == 'Aprende':
             return 'O que você quer que eu aprenda?'
-        if phrase == 'Forms':
-            return "https://docs.google.com/forms/d/e/1FAIpQLSdmrdGbOZgiK6GyStj9HTBBXIji4AycF6o2ZDjsmG9udgSP2w/viewform"
+        if phrase == 'site ama':
+            return "https://amaitirapina.org.br/"
         
         # historic
         lastPhrase = self.historic[-1]
@@ -44,17 +51,28 @@ class Severina():
             self.phrases[self.key] = response
             self.saveMemory()
             return 'Aprendido!'
+        if lastPhrase == "Tudo bem! E você?":
+            response = phrase
+            return "Bom saber de você!"
+        if lastPhrase == "Como posso ajudar?":
+            response = phrase
+            return "Objetivo alcançado?"
+        if lastPhrase == "Hoje eu me sinto bem! E você?":
+            response = phrase
+            return 'Tenha um ótimo dia!'
         try:
             response = str(eval(phrase))
             return response
         except:
             pass
         return 'Não entendi...'
+
     def getName(self, name):
         if 'Meu nome é ' in name:
             name = name[12:]
         name = name.title()
         return name
+    
     def answerName(self, name):
         if name in self.known:
             if name != 'Severina':
@@ -66,10 +84,12 @@ class Severina():
             self.known.append(name)
             self.saveMemory()
         return phrase + name + '!'
+    
     def saveMemory(self):
         memory = open(self.name+'.json', 'w')
         json.dump([self.known, self.phrases], memory)
         memory.close()
+    
     def speak(self, phrase):
         if 'Executa ' in phrase:
             platform = sys.platform
