@@ -30,9 +30,21 @@ class Severina():
         return phrase.lower()
 
     def think(self, phrase):
+        if 'executa ' in phrase:
+            platform = sys.platform
+            command = phrase.replace('executa ', '')
+            if 'win' in platform:
+                os.startfile(command)
+            if 'linux' in platform:
+                try:
+                    sp.Popen(command)
+                except FileNotFoundError:
+                    sp.Popen(['xdg-open', command])
+        return 'acesso ao link'
+
         if phrase in self.phrases:
             return self.phrases[phrase]
-        if phrase == 'Aprende':
+        if phrase == 'aprende':
             return 'O que você quer que eu aprenda?'
         if phrase == 'site ama':
             return "https://amaitirapina.org.br/"
@@ -86,21 +98,9 @@ class Severina():
         return phrase + name + '!'
     
     def saveMemory(self):
-        memory = open(self.name+'.json', 'w')
+        memory = open(self.name +'.json', 'w')
         json.dump([self.known, self.phrases], memory)
         memory.close()
     
     def speak(self, phrase):
-        if 'Executa ' in phrase:
-            platform = sys.platform
-            command = phrase.replace('Executa ', '')
-            if 'win' in platform:
-                os.startfile(command)
-            if 'linux' in platform:
-                try:
-                    sp.Popen(command)
-                except FileNotFoundError:
-                    sp.Popen(['xdg-open', command])
-        else:
-            print(phrase)
         self.historic.append(phrase)
